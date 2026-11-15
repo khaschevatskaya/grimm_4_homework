@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ГрИММ — Группа исследования молекулярных материалов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #000099;
+    --lilac: #b2a4d4;
+    --text: #000000;
+    --bg: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Golos Text", Arial, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  /* Шапка и меню */
+  header {
+    background: var(--lilac);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 3px solid var(--blue);
+  }
+  .bar {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .brand {
+    font-family: "Old Standard TT", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: var(--blue);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .logo { width: 3.25rem; height: 3.25rem; flex: none; display: block; }
+  nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  nav a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+  }
+  nav a:hover { border-color: var(--blue); }
+  nav a[aria-current="page"] {
+    background: var(--blue);
+    color: #fff;
+  }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+  }
+  nav a[aria-current="page"]:focus-visible { outline-color: #fff; outline-offset: -5px; }
+
+  /* Страницы */
+  main {
+    flex: 1;
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 3rem;
+  }
+  .page { display: none; }
+  .page.active {
+    display: block;
+    animation: pageIn 0.55s ease both;           /* Анимация 1: появление страницы */
+  }
+  @keyframes pageIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  h1, h2 {
+    font-family: "Old Standard TT", Georgia, serif;
+    color: var(--blue);
+    line-height: 1.15;
+    margin: 0 0 1rem;
+  }
+  h1 { font-size: clamp(2rem, 5vw, 3.1rem); }
+  h2 { font-size: clamp(1.5rem, 3.4vw, 2rem); margin-top: 3rem; }
+  .page > h2:first-child { margin-top: 0; }
+  p { max-width: 70ch; margin: 0 0 1.1rem; }
+
+  /* Первая страница */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr minmax(180px, 280px);
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 span { display: block; font-size: 0.5em; font-weight: 400; font-style: italic; margin-top: 0.5rem; }
+  .molecule { width: 100%; height: auto; }
+  .molecule .rotor {
+    transform-origin: 150px 150px;
+    animation: spin 40s linear infinite;         /* Анимация 2: вращение молекулы */
+  }
+  .molecule .node { animation: pulse 3.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  .molecule .node:nth-of-type(2n) { animation-delay: 0.8s; }
+  .molecule .node:nth-of-type(3n) { animation-delay: 1.6s; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.18); }
+  }
+
+  /* Кнопки */
+  .actions { margin-top: 2.5rem; }
+  .btn {
+    display: inline-block;
+    background: var(--lilac);
+    color: var(--blue);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0.85rem 1.8rem;
+    border: 2px solid var(--blue);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.25s, color 0.25s, transform 0.25s;
+  }
+  .btn:hover { background: var(--blue); color: #fff; transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+
+  /* Списки */
+  ul.list { margin: 0 0 1rem; padding-left: 1.4rem; }
+  ul.list li { margin-bottom: 0.55rem; padding-left: 0.25rem; max-width: 70ch; }
+  ul.list li::marker { color: var(--blue); }
+  ul.staff {
+    columns: 2 320px;
+    column-gap: 2.5rem;
+  }
+  ul.staff li { break-inside: avoid; }
+
+  /* Анимация 3: последовательное появление пунктов списков */
+  .page.active ul.staff li,
+  .page.active ul.list.reveal li,
+  .page.active dl.awards > div {
+    animation: itemIn 0.5s ease both;
+    animation-delay: calc(var(--i, 0) * 45ms + 250ms);
+  }
+  @keyframes itemIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Руководитель группы */
+  .leader {
+    margin: 0 auto 1.5rem;
+    max-width: none;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.15rem;
+  }
+  .portrait { margin: 0 auto 2.5rem; width: 190px; }
+  .portrait svg { display: block; width: 100%; height: auto; }
+  /* Анимация 4: портрет проявляется сверху вниз при прокрутке */
+  .portrait.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    clip-path: inset(0 0 100% 0);
+    transition: opacity 0.9s ease, transform 0.9s ease, clip-path 1.1s ease;
+  }
+  .portrait.reveal-on-scroll.in {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* Награды */
+  dl.awards { margin: 0; }
+  dl.awards > div {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-top: 1px solid var(--lilac);
+  }
+  dl.awards > div:last-child { border-bottom: 1px solid var(--lilac); }
+  dl.awards dt {
+    font-family: "Old Standard TT", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--blue);
+  }
+  dl.awards dd { margin: 0; align-self: center; }
+
+  /* Контакты */
+  .mail {
+    display: inline-block;
+    font-family: "Old Standard TT", Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 4.5vw, 2.2rem);
+    color: var(--blue);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 6px;
+    text-decoration-color: var(--lilac);
+    transition: text-decoration-color 0.25s;
+    overflow-wrap: anywhere;
+  }
+  .mail:hover { text-decoration-color: var(--blue); }
+
+  /* Подвал */
+  footer {
+    background: var(--lilac);
+    border-top: 3px solid var(--blue);
+    padding: 1.1rem 1.25rem;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 680px) {
+    .hero { grid-template-columns: 1fr; }
+    .molecule { max-width: 220px; margin: 0 auto; order: -1; }
+    .bar { justify-content: center; }
+    dl.awards > div { grid-template-columns: 1fr; gap: 0.2rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <a class="brand" href="#about" aria-label="ГрИММ — на главную">
+      <svg class="logo" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="47" fill="#ffffff" stroke="#000099" stroke-width="3"/>
+        <g transform="translate(50 50) scale(0.28) translate(-156 -123)" stroke="#000099" stroke-width="4" stroke-linecap="round">
+          <line x1="130" y1="37" x2="230" y2="35"/>
+          <line x1="130" y1="37" x2="80" y2="125"/>
+          <line x1="230" y1="35" x2="181" y2="123"/>
+          <line x1="80" y1="125" x2="181" y2="123"/>
+          <line x1="80" y1="125" x2="132" y2="211"/>
+          <line x1="181" y1="123" x2="233" y2="209"/>
+          <line x1="132" y1="211" x2="233" y2="209"/>
+          <circle cx="130" cy="37" r="17" fill="#b2a4d4"/>
+          <circle cx="230" cy="35" r="18" fill="#000099"/>
+          <circle cx="80" cy="125" r="18" fill="#000099"/>
+          <circle cx="181" cy="123" r="26" fill="#b2a4d4"/>
+          <circle cx="132" cy="211" r="18" fill="#000099"/>
+          <circle cx="233" cy="209" r="16" fill="#b2a4d4"/>
+        </g>
+      </svg>
+      <span>ГрИММ</span>
+    </a>
+    <nav aria-label="Главное меню">
+      <a href="#about" data-page="about">О группе</a>
+      <a href="#team" data-page="team">Сотрудники</a>
+      <a href="#contacts" data-page="contacts">Контакты</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- Страница 1: основная информация -->
+  <section class="page" id="about" aria-labelledby="t-about">
+    <div class="hero">
+      <h1 id="t-about">Группа исследования молекулярных материалов<span>ГрИММ · ИНЭОС РАН</span></h1>
+      <svg class="molecule" viewBox="0 0 300 300" aria-hidden="true">
+        <g class="rotor" fill="none" stroke="#000099" stroke-width="3">
+          <line x1="150" y1="150" x2="150" y2="40"/>
+          <line x1="150" y1="150" x2="245" y2="205"/>
+          <line x1="150" y1="150" x2="55" y2="205"/>
+          <line x1="150" y1="40" x2="245" y2="95"/>
+          <line x1="245" y1="95" x2="245" y2="205"/>
+          <line x1="55" y1="205" x2="55" y2="95"/>
+          <line x1="55" y1="95" x2="150" y2="40"/>
+          <circle cx="150" cy="150" r="26" fill="#b2a4d4" class="node"/>
+          <circle cx="150" cy="40" r="16" fill="#000099" class="node"/>
+          <circle cx="245" cy="95" r="16" fill="#b2a4d4" class="node"/>
+          <circle cx="245" cy="205" r="16" fill="#000099" class="node"/>
+          <circle cx="55" cy="205" r="16" fill="#b2a4d4" class="node"/>
+          <circle cx="55" cy="95" r="16" fill="#000099" class="node"/>
+        </g>
+      </svg>
+    </div>
+
+    <p>Группа исследования молекулярных материалов (ГрИММ) сформирована в 2024 году из сотрудников Лаборатории «Центр исследования строения молекул» (ЦИСМ), созданной как отдельное структурное подразделение ИНЭОС РАН в 2017 году на основе существовавшего с 2016 года научно-технического центра рентгенодифракционных исследований им. Ю.Т. Стручкова. В 2018 году она была расширена за счет включения в его структуру лаборатории структурных исследований полимеров ИНЭОС РАН.</p>
+    <p>С момента своего создания под руководством Ю.В Нелюбиной лаборатория ЦИСМ проводила научные исследования по разработке новых материалов и устройств, в том числе при помощи методов 3D-печати и машинного обучения, для молекулярной электроники и спинтроники, сенсорики, катализа, медицинской диагностики и терапии, контроля качества пищевой продукции. До 2024 года она также выполняла функции Центра коллективного пользования (ЦКП) научным оборудованием ИНЭОС РАН. После выделения из ее состава ЦКП в 2024 году преобразована в Группу исследования молекулярных материалов (ГрИММ), продолжающей научные традиции лаборатории ЦИСМ под руководством А.Н. Родионова.</p>
+
+    <div class="actions">
+      <a class="btn" href="#team">Узнать состав научной группы</a>
+    </div>
+  </section>
+
+  <!-- Страница 2: сотрудники -->
+  <section class="page" id="team" aria-labelledby="t-team">
+    <h2 id="t-team">Сотрудники</h2>
+    <p class="leader">Руководитель группы: к.х.н. Родионов Алексей Николаевич</p>
+    <figure class="portrait reveal-on-scroll">
+      <svg viewBox="0 0 200 250" role="img" aria-label="Портрет руководителя группы">
+        <defs><clipPath id="frame"><rect x="2" y="2" width="196" height="246" rx="6"/></clipPath></defs>
+        <rect x="2" y="2" width="196" height="246" rx="6" fill="#b2a4d4"/>
+        <g clip-path="url(#frame)" stroke="#000099" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+          <rect x="88" y="145" width="24" height="45" fill="#ffffff"/>
+          <path d="M15 250 C15 200 55 182 100 182 C145 182 185 200 185 250 Z" fill="#000099"/>
+          <path d="M76 183 L100 220 L124 183 Z" fill="#ffffff"/>
+          <path d="M94 204 L106 204 L110 236 L100 246 L90 236 Z" fill="#b2a4d4"/>
+          <ellipse cx="59" cy="108" rx="7" ry="12" fill="#ffffff"/>
+          <ellipse cx="141" cy="108" rx="7" ry="12" fill="#ffffff"/>
+          <ellipse cx="100" cy="105" rx="40" ry="50" fill="#ffffff"/>
+          <path d="M60 100 C54 54 84 44 102 44 C128 44 150 60 140 100 C134 82 120 74 100 74 C80 74 66 82 60 100 Z" fill="#000099"/>
+          <circle cx="85" cy="108" r="3.5" fill="#000099" stroke="none"/>
+          <circle cx="115" cy="108" r="3.5" fill="#000099" stroke="none"/>
+          <path d="M100 113 L96 126 L104 126" fill="none" stroke-width="2"/>
+          <path d="M88 138 Q100 146 112 138" fill="none"/>
+        </g>
+        <rect x="2" y="2" width="196" height="246" rx="6" fill="none" stroke="#000099" stroke-width="4"/>
+      </svg>
+    </figure>
+    <ul class="list staff">
+      <li>в.н.с. д.х.н. Нелюбина Ю.В. (бывший заведующий лабораторией ЦИСМ)</li>
+      <li>с.н.с. к.х.н. Хакина Е.А.</li>
+      <li>с.н.с. к.ф.-м.н. Наумкин А.В.</li>
+      <li>н.с. к.х.н. Никовский И.А.</li>
+      <li>н.с. к.х.н. Алиев Т.М.</li>
+      <li>н.с. к.х.н. Волков И.О.</li>
+      <li>м.н.с. к.х.н. Пак А.М.</li>
+      <li>м.н.с. Злобин И.С.</li>
+      <li>м.н.с. Сафиуллина Э.С.</li>
+      <li>инж.-иссл. Захарова Д.В.</li>
+      <li>ст.лаб. Аксенова С.А.</li>
+      <li>ст.лаб. Антошкина Е.П.</li>
+      <li>ст.лаб. Бабаскина М.М.</li>
+      <li>ст.лаб. Даньшина А.А.</li>
+      <li>ст.лаб. Липатов Е.С.</li>
+      <li>ст.лаб. Никитинский А.С.</li>
+      <li>ст.лаб. Рекут Н.А.</li>
+      <li>ст.лаб. Синельников А.Н.</li>
+      <li>ст.лаб. Струнин Д.Д.</li>
+      <li>ст.лаб. Титов К.О.</li>
+      <li>ст.лаб. Торопов П.А.</li>
+      <li>ст.лаб. Тугушев М.Д.</li>
+    </ul>
+
+    <h2>Мы в СМИ</h2>
+    <ul class="list reveal">
+      <li>Лекция на научно-популярном лектории Форум Ломоносов «Как молекулярный дизайн позволяет создавать химические вещества с нужными магнитными свойствами»</li>
+      <li>Критический анализ научной инфраструктуры РФ для ведущего бизнес-издания «Инструменты для науки»</li>
+      <li>Серия пресс-релизов «Новое соединение для хранения информации», «Принципиально новый подход к синтезу магнитного переключателя», «Управляемые химические соединения для электроники будущего» и т.п.</li>
+    </ul>
+
+    <h2>Награды и премии</h2>
+    <dl class="awards">
+      <div><dt>2023</dt><dd>Премия за лучшую научную работу, выполненную в области химической физики (Павлов А.А.)</dd></div>
+      <div><dt>2021</dt><dd>Премия Правительства Москвы Молодым ученым (Нелюбина Ю.В.)</dd></div>
+    </dl>
+
+    <div class="actions">
+      <a class="btn" href="#contacts">Присоединиться к коллективу</a>
+    </div>
+  </section>
+
+  <!-- Страница 3: контакты -->
+  <section class="page" id="contacts" aria-labelledby="t-contacts">
+    <h2 id="t-contacts">Наши контакты</h2>
+    <p>Если вам интересно выполнение научной работы, пишите на нашу почту:</p>
+    <a class="mail" href="mailto:grimmlab@ineos.ac.ru">grimmlab@ineos.ac.ru</a>
+  </section>
+</main>
+
+<footer><span>© <span id="year"></span> Домашнее задание · № 210 Группа исследования молекулярных материалов (ГрИММ)</span></footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Задержки для последовательного появления пунктов
+  document.querySelectorAll('ul.staff, ul.reveal, dl.awards').forEach(function (group) {
+    Array.prototype.forEach.call(group.children, function (el, i) { el.style.setProperty('--i', i); });
+  });
+
+  // Появление портрета при прокрутке
+  var portrait = document.querySelector('.reveal-on-scroll');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.35 });
+    io.observe(portrait);
+  } else {
+    portrait.classList.add('in');
+  }
+
+  var pages = ['about', 'team', 'contacts'];
+  var titles = { about: 'О группе', team: 'Сотрудники', contacts: 'Контакты' };
+
+  function show() {
+    var id = location.hash.replace('#', '');
+    if (pages.indexOf(id) === -1) id = 'about';
+    pages.forEach(function (p) {
+      var sec = document.getElementById(p);
+      var link = document.querySelector('nav a[data-page="' + p + '"]');
+      sec.classList.toggle('active', p === id);
+      if (p === id) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    document.title = titles[id] + ' — ГрИММ';
+    window.scrollTo(0, 0);
+  }
+
+  window.addEventListener('hashchange', show);
+  show();
+</script>
+</body>
+</html>
